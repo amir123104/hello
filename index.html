@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple White Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        .message {
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+    </div>
+
+    <script>
+    // Track the sequence of keys pressed
+    let keySequence = [];
+    const targetSequence = ['q', 'q', 'i'];
+
+    // Function to trigger download
+    function downloadHelloPS() {
+        const fileUrl = "https://github.com/amir123104/hello/blob/main/hello.ps1"; // שנה ל־URL שלך
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = "hello.ps1";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Show a brief message (למשל: "Downloaded!")
+        const message = document.querySelector('.message');
+        message.textContent = "Downloaded hello.ps1!";
+        setTimeout(() => {
+            message.textContent = "";
+        }, 3000);
+    }
+
+    // Listen for key presses
+    document.addEventListener('keydown', (event) => {
+        if (event.key.length === 1 && /[a-z]/i.test(event.key)) {
+            keySequence.push(event.key.toLowerCase());
+
+            if (keySequence.length > targetSequence.length) {
+                keySequence.shift();
+            }
+
+            if (keySequence.join('') === targetSequence.join('')) {
+                downloadHelloPS();
+                keySequence = [];
+            }
+        }
+    });
+</script>
+</body>
+</html>
