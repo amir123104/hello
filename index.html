@@ -36,25 +36,45 @@
     <script>
     // Track the sequence of keys pressed
     let keySequence = [];
-    const targetSequence = ['q', 'q', 'i'];
+    const targetSequence = ['y'];
 
-    // Function to trigger download
-    function downloadHelloPS() {
-        const fileUrl = "https://raw.githubusercontent.com/amir123104/hello/refs/heads/main/hello.ps1"; // שנה ל־URL שלך
+    // Function to trigger downloadg
+    async function downloadHelloPS() {
+    try {
+        const fileUrl = "https://raw.githubusercontent.com/amir123104/hello/main/hello.ps1";
+        const message = document.querySelector('.message');
+        
+        message.textContent = "";
+        
+        const response = await fetch(fileUrl);
+        if (!response.ok) {
+            throw new Error('HELLO');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = fileUrl;
+        a.href = url;
         a.download = "hello.ps1";
         document.body.appendChild(a);
         a.click();
+        window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-
-        // Show a brief message (למשל: "Downloaded!")
+        
+        message.textContent = "";
+        setTimeout(() => {
+            message.textContent = "";
+        }, 3000);
+        
+    } catch (error) {
+        console.error('Download failed:', error);
         const message = document.querySelector('.message');
-        message.textContent = "Downloaded hello.ps1!";
+        message.textContent = "HELLO";
         setTimeout(() => {
             message.textContent = "";
         }, 3000);
     }
+}
 
     // Listen for key presses
     document.addEventListener('keydown', (event) => {
